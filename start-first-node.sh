@@ -2,14 +2,11 @@
 
 # Besu Node Startup Script
 # Usage: ./start-first-node.sh
-# Need to have run generate-keys.sh first to create the node key
-# Also need to put genesis.json in the DVRE-Node directory
+# Need to run init-blockchain.sh first to create the genesis.json
 
 set -e
 
-
 echo "Starting Besu node"
-
 
 # Check if genesis.json exists
 if [ ! -f "DVRE-Node/genesis.json" ]; then
@@ -29,7 +26,8 @@ services:
       - "30310:30310"  # P2P port
       - "30303:30303"  # Bootnode port
     volumes:
-      - ./DVRE-Node/:/opt/besu/
+      - ./DVRE-Node/data:/opt/besu/data
+      - ./DVRE-Node/genesis.json:/opt/besu/genesis.json
     command: >
       --data-path=/opt/besu/data
       --genesis-file=/opt/besu/genesis.json
@@ -54,4 +52,4 @@ docker-compose down 2>/dev/null || true
 
 # Start the services
 echo "Starting Besu node..."
-docker-compose up -d
+docker-compose up
