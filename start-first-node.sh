@@ -15,6 +15,17 @@ if [ ! -f "DVRE-Node/genesis.json" ]; then
     exit 1
 fi
 
+
+# Fetch public IP once
+PUBLIC_IP=$(curl -s https://api.ipify.org)
+if [ -z "$PUBLIC_IP" ]; then
+    echo "Error: Could not fetch public IP"
+    exit 1
+fi
+
+echo "Starting Besu node with public IP: $PUBLIC_IP"
+
+
 # Create docker-compose.yml with the provided enode URL
 cat > docker-compose.yml << EOF
 services:
@@ -33,7 +44,7 @@ services:
       --genesis-file=/opt/besu/genesis.json
       --p2p-port=30310
       --rpc-http-port=8550
-      --p2p-host=0.0.0.0
+      --p2p-host=$PUBLIC_IP
       --rpc-http-host=0.0.0.0
       --rpc-http-enabled
       --rpc-http-api=ETH,NET,IBFT

@@ -17,7 +17,14 @@ fi
 
 ENODE_URL="$1"
 
-echo "Starting Besu node with bootnode: $ENODE_URL"
+# Fetch public IP once
+PUBLIC_IP=$(curl -s https://api.ipify.org)
+if [ -z "$PUBLIC_IP" ]; then
+    echo "Error: Could not fetch public IP"
+    exit 1
+fi
+
+echo "Starting Besu node with bootnode: $ENODE_URL and public IP: $PUBLIC_IP"
 
 # Check if genesis.json exists
 if [ ! -f "DVRE-Node/genesis.json" ]; then
@@ -45,7 +52,7 @@ services:
       --bootnodes=$ENODE_URL
       --p2p-port=30310
       --rpc-http-port=8550
-      --p2p-host=0.0.0.0
+      --p2p-host=$PUBLIC_IP
       --rpc-http-host=0.0.0.0
       --rpc-http-enabled
       --rpc-http-api=ETH,NET,IBFT
