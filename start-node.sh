@@ -41,7 +41,8 @@ services:
     container_name: besu-node
     ports:
       - "8550:8550"    # JSON-RPC port
-      - "30310:30310"  # P2P port
+      - "30310:30310/tcp"  # P2P port
+      - "30310:30310/udp"  # P2P port
       - "30303:30303"  # Bootnode port
     volumes:
       - ./DVRE-Node/data:/opt/besu/data
@@ -67,8 +68,8 @@ echo "Docker Compose file created with bootnode: $ENODE_URL"
 
 # Stop any existing containers
 echo "Stopping any existing Besu containers..."
-docker-compose down 2>/dev/null || true
+docker compose down 2>/dev/null || true
 
 # Start the services
 echo "Starting Besu node..."
-docker-compose up
+docker compose up

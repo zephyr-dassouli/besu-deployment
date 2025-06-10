@@ -6,7 +6,6 @@
 # Need for :
 # - Besu to be installed
 # - Docker to be installed
-# - Docker Compose to be installed
 
 # Exit immediately if a command exits with a non-zero status
 set -e
